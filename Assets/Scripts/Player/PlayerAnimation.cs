@@ -8,6 +8,9 @@ public class PlayerAnimation : MonoBehaviour
     Vector3 currentScale;
     string currentAnimation;
 
+    [SerializeField]
+    private RuntimeAnimatorController[] animControllers;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -44,6 +47,16 @@ public class PlayerAnimation : MonoBehaviour
             currentScale.x = -Mathf.Abs(currentScale.x);
         }
         transform.localScale = currentScale;
+    }
+    public void ChangeAnimatorController(int controllerIndex)
+    {
+        anim.runtimeAnimatorController = animControllers[controllerIndex];
+
+        currentAnimation = "";
+    }
+    public int GetNumberOfWeapons()
+    {
+        return animControllers.Length;
     }
 
 }
