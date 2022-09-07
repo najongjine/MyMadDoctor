@@ -18,10 +18,23 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerAnimation playerAnimation;
 
+    [SerializeField]
+    float shootWaitTime = 0.5f;
+    float waitBeforeShooting;
+
+    [SerializeField]
+    float walkWaitTime = 0.3f;
+
+    float waitBeforeWalking;
+    bool canMove = true;
+
+    PlayerShootingManager playerShootingManager;
+
     private void Awake()
     {
         theRB=GetComponent<Rigidbody2D>();
         playerAnimation=GetComponent<PlayerAnimation>();
+        playerShootingManager=GetComponent<PlayerShootingManager>();
     }
     // Start is called before the first frame update
     void Start()
@@ -35,12 +48,19 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement();
         HandleAnimation();
         FlipSprite();
+        HandleShooting();
+        CheckToMove();
     }
 
     void HandleMovement()
     {
         xAxis = Input.GetAxisRaw(TagManager.HORIZONTAL_AXIS);
         yAxis = Input.GetAxisRaw(TagManager.VERTICAL_AXIS);
+
+        if (!canMove)
+        {
+            return;
+        }
 
         tempPos = transform.position;
         tempPos.x += xAxis * moveSpeed * Time.deltaTime;
@@ -78,6 +98,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAnimation()
     {
+        if (!canMove)
+        {
+            return;
+        }
         if (Mathf.Abs(xAxis)>0 || Mathf.Abs(yAxis) >0)
         {
             playerAnimation.PlayAnimation(TagManager.WALK_ANIMATION_NAME);
@@ -87,5 +111,68 @@ public class PlayerMovement : MonoBehaviour
             playerAnimation.PlayAnimation(TagManager.IDLE_ANIMATION_NAME);
         }
     }
+    
+    void StopMovement(float waitTime)
+    {
+        canMove = false;
+        waitBeforeWalking = Time.time + waitTime;
+    }
+    void CheckToMove()
+    {
+        if (Time.time > waitBeforeWalking)
+        {
+            canMove = true;
+        }
+    }
+    void HandleShooting()
+    {
+        //if (Input.GetButtonDown("Fire1"))
+        //{
+        //    if (Time.time > waitBeforeShooting)
+        //    {
+        //        Shoot();
+        //        playerShootingManager.ShootBullet(transform.localScale.x);
+        //    }
+
+        //}
+        // if the current weapon is the electric gun
+        if (playerShootingManager.GetWeaponType() == 1)
+        {
+
+            if (Input.GetButton("Fire1"))
+            {
+                playerShootingManager.ShootElectricity(true);
+                Shoot();
+            }
+            else if (Input.GetButtonUp("Fire1"))
+            {
+                playerShootingManager.ShootElectricity(false);
+                waitBeforeShooting = 0f;
+                canMove = true;
+            }
+
+        }
+        else
+        {
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                if (Time.time > waitBeforeShooting)
+                {
+                    playerShootingManager.ShootBullet(transform.localScale.x);
+                    Shoot();
+                }
+            }
+
+        }
+
+    }
+    void Shoot()
+    {
+        waitBeforeShooting = Time.time + shootWaitTime;
+        StopMovement(walkWaitTime);
+        playerAnimation.PlayAnimation(TagManager.SHOOT_ANIMATION_NAME);
+    }
+    
 
 }

@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 public class PlayerShootingManager : MonoBehaviour
 {
-    /*
     [SerializeField]
     private Bullet[] bullets;
 
@@ -28,6 +31,7 @@ public class PlayerShootingManager : MonoBehaviour
     {
         bulletPool = GetComponent<BulletPool>();
         InitializeBullets();
+
     }
 
     void InitializeBullets()
@@ -74,6 +78,7 @@ public class PlayerShootingManager : MonoBehaviour
         if (facingLeftSide < 0)
             currentBullet.SetNegativeSpeed();
 
+        /*
         if (weaponType == 0 || weaponType == 3)
         {
             bulletFX_1.gameObject.transform.position = bulletSpawnPosition[weaponType].position;
@@ -84,20 +89,20 @@ public class PlayerShootingManager : MonoBehaviour
             bulletFX_2.gameObject.transform.position = bulletSpawnPosition[weaponType].position;
             bulletFX_2.Play(TagManager.FX_ANIMATION_NAME);
         }
-
+        */
         if (weaponType == 0)
         {
-            SoundManager.instance.Weapon_1_Shoot();
+            //SoundManager.instance.Weapon_1_Shoot();
         }
 
         if (weaponType == 2)
         {
-            SoundManager.instance.Weapon_3_Shoot();
+            //SoundManager.instance.Weapon_3_Shoot();
         }
 
         if (weaponType == 3)
         {
-            SoundManager.instance.Weapon_4_Shoot();
+            //SoundManager.instance.Weapon_4_Shoot();
         }
 
     }
@@ -106,9 +111,8 @@ public class PlayerShootingManager : MonoBehaviour
     {
         electricityBullet.SetActive(activateWeapon);
         // sound fx
-        SoundManager.instance.Weapon_2_Shoot(activateWeapon);
+        //SoundManager.instance.Weapon_2_Shoot(activateWeapon);
     }
-    */
 
 } // class
 

@@ -45,9 +45,8 @@ public class PlayerWeaponsManager : MonoBehaviour
 
             playerAnimation.ChangeAnimatorController(weaponIndex);
 
-            /*
             playerShootingManager.SetWeaponType(weaponIndex);
-
+            /*
             GameplayUIController.instance.ChangeWeaponIcon();
             */
 
