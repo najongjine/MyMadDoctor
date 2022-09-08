@@ -33,7 +33,7 @@ public class EnemyDamageArea : MonoBehaviour
             if (canDealDamage)
             {
                 canDealDamage = false;
-                //player.TakeDamage(10f);
+                player.TakeDamage(10f);
 
             }
         }

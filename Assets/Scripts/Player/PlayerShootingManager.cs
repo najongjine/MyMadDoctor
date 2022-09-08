@@ -78,7 +78,6 @@ public class PlayerShootingManager : MonoBehaviour
         if (facingLeftSide < 0)
             currentBullet.SetNegativeSpeed();
 
-        /*
         if (weaponType == 0 || weaponType == 3)
         {
             bulletFX_1.gameObject.transform.position = bulletSpawnPosition[weaponType].position;
@@ -89,7 +88,6 @@ public class PlayerShootingManager : MonoBehaviour
             bulletFX_2.gameObject.transform.position = bulletSpawnPosition[weaponType].position;
             bulletFX_2.Play(TagManager.FX_ANIMATION_NAME);
         }
-        */
         if (weaponType == 0)
         {
             //SoundManager.instance.Weapon_1_Shoot();

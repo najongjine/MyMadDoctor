@@ -61,11 +61,8 @@ public class Enemy : MonoBehaviour
     
     [SerializeField]
     private Transform enemyBulletSpawnPos;
-    /*
-    private EnemyBulletPool enemyBulletPool;
-
+    
     private Health enemyHealth;
-    */
 
     private bool enemyDead;
 
@@ -74,13 +71,7 @@ public class Enemy : MonoBehaviour
         playerTarget = GameObject.FindWithTag(TagManager.PLAYER_TAG).transform;
         enemyAnimation = GetComponent<PlayerAnimation>();
 
-        // get ref to bullet pool
-        /*
-        enemyBulletPool = GameObject.FindWithTag(TagManager.ENEMY_POOL_TAG)
-            .GetComponent<EnemyBulletPool>();
-
         enemyHealth = GetComponent<Health>();
-        */
 
     }
     // Start is called before the first frame update
@@ -140,12 +131,13 @@ public class Enemy : MonoBehaviour
 
         if (enemyState == EnemyState.Hit)
         {
-            //CheckIfDamageIsOver();
+            CheckIfDamageIsOver();
             return;
         }
 
-        if (enemyState == EnemyState.Electric)
+        if (enemyState == EnemyState.Electric) { 
             return;
+        }
 
         if (Vector3.Distance(transform.position, playerTarget.position) > stoppingDistance)
         {
@@ -198,18 +190,26 @@ public class Enemy : MonoBehaviour
             if (isShooter)
             {
                 // shoot the bullet
-
+                var bulletObj=EnemyBulletPool.instance.GetBullet(enemyBullet);
+                bulletObj.transform.position = new Vector2(enemyBulletSpawnPos.position.x, enemyBulletSpawnPos.position.y);
                 if (transform.position.x > playerTarget.transform.position.x)
                 {
+                    /*
                     Instantiate(enemyBullet, enemyBulletSpawnPos.position,
                         Quaternion.identity).SetNegativeSpeed();
+                    */
                     //enemyBulletPool.ShootBullet(enemyBulletSpawnPos.position, true);
+                    bulletObj.SetNegativeSpeed();
+                    transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x),transform.localScale.y);
                 }
                 else
                 {
+                    /*
                     Instantiate(enemyBullet, enemyBulletSpawnPos.position,
                         Quaternion.identity);
+                    */
                     //enemyBulletPool.ShootBullet(enemyBulletSpawnPos.position, false);
+                    transform.localScale = new Vector2(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
                 }
 
             }
@@ -221,6 +221,79 @@ public class Enemy : MonoBehaviour
     {
         damageArea.gameObject.SetActive(true);
         damageArea.ResetDeactivateTimer();
+    }
+    void EnemyDamaged(bool electricDamage)
+    {
+
+        if (electricDamage)
+        {
+            enemyState = EnemyState.Electric;
+
+            DealDamage(2);
+        }
+        else
+        {
+
+            damageTimer = Time.time + damageWaitTime;
+            enemyState = EnemyState.Hit;
+
+            DealDamage(1);
+        }
+    }
+    void CheckIfDamageIsOver()
+    {
+        if (Time.time > damageTimer)
+            enemyState = EnemyState.Idle;
+    }
+
+    void DealDamage(int amount)
+    {
+        enemyHealth.EnemyTakeDamage(amount);
+
+        if (enemyHealth.GetEnemyHealth() <= 0)
+        {
+
+            GetComponent<Collider2D>().enabled = false;
+
+            enemyState = EnemyState.Death;
+
+            Invoke("RemoveEnemyFromGame", 2f);
+
+            //GameplayUIController.instance.SetKillScoreText();
+
+        }
+    }
+
+    void RemoveEnemyFromGame()
+    {
+        // inform the spawner to remove the enemy
+        /*
+        EnemySpawner.instance.RemoveSpawnedEnemy(gameObject);
+        */
+        Destroy(gameObject);
+        
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.CompareTag(TagManager.PLAYER_BULLET_TAG))
+        {
+            EnemyDamaged(false);
+        }
+
+        if (collision.CompareTag(TagManager.ELECTRIC_BULLET_TAG))
+        {
+            EnemyDamaged(true);
+        }
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(TagManager.ELECTRIC_BULLET_TAG))
+        {
+            enemyState = EnemyState.Idle;
+        }
     }
 
 

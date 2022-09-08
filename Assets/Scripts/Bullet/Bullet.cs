@@ -57,5 +57,12 @@ public class Bullet : MonoBehaviour
         tempScale.x= -Mathf.Abs(tempScale.x);
         transform.localScale = tempScale;   
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag==TagManager.ENEMY_TAG)
+        {
+            gameObject.SetActive(false);
+        }
+    }
 
 }

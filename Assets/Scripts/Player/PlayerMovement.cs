@@ -30,11 +30,26 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerShootingManager playerShootingManager;
 
+    Health playerHealth;
+    bool playerDied;
+
+    SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    float damageColorWaitTime = 0.1f;
+    float damageColorTimer;
+    bool playerDamaged;
+    Color tempColor;
+
+    [SerializeField]
+    Animator playerHurtFX;
     private void Awake()
     {
         theRB=GetComponent<Rigidbody2D>();
         playerAnimation=GetComponent<PlayerAnimation>();
         playerShootingManager=GetComponent<PlayerShootingManager>();
+        playerHealth=GetComponent<Health>();
+        spriteRenderer=GetComponent<SpriteRenderer>();
     }
     // Start is called before the first frame update
     void Start()
@@ -45,11 +60,16 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerDied)
+        {
+            return;
+        }
         HandleMovement();
         HandleAnimation();
         FlipSprite();
         HandleShooting();
         CheckToMove();
+        ChangeDamageColor();
     }
 
     void HandleMovement()
@@ -173,6 +193,103 @@ public class PlayerMovement : MonoBehaviour
         StopMovement(walkWaitTime);
         playerAnimation.PlayAnimation(TagManager.SHOOT_ANIMATION_NAME);
     }
-    
+    public void TakeDamage(float amount)
+    {
+
+        if (playerDied)
+            return;
+
+        playerHealth.PlayerTakeDamage(amount);
+
+        if (playerHealth.GetPlayerHealth() <= 0)
+        {
+            playerDied = true;
+
+            playerAnimation.PlayAnimation(TagManager.DEATH_ANIMATION_NAME);
+
+            Invoke("RemovePlayerFromGame", 3f);
+
+        }
+        else
+        {
+            PlayerReceivedDamage();
+        }
+
+    }
+
+    void RemovePlayerFromGame()
+    {
+        // call game over panel
+        //GameOverUIController.instance.GameOver();
+        Destroy(gameObject);
+    }
+
+    void PlayerReceivedDamage()
+    {
+        if (!playerDamaged)
+        {
+
+            tempColor = spriteRenderer.material.color;
+
+            tempColor.a = 1f;
+            tempColor.r = 1f;
+            tempColor.g = 0f;
+            tempColor.b = 0f;
+
+            spriteRenderer.material.SetColor("_Color", tempColor);
+
+            damageColorTimer = Time.time + damageColorWaitTime;
+
+            playerDamaged = true;
+
+            playerHurtFX.Play(TagManager.FX_ANIMATION_NAME);
+
+            // play the hurt sound fx
+            //SoundManager.instance.PlayerHurt();
+        }
+    }
+
+    // change back to original color
+    void ChangeDamageColor()
+    {
+
+        if (playerDamaged)
+        {
+
+            if (Time.time > damageColorTimer)
+            {
+
+                playerDamaged = false;
+
+                tempColor = spriteRenderer.material.color;
+
+                tempColor.a = 1f;
+                tempColor.r = 1f;
+                tempColor.g = 1f;
+                tempColor.b = 1f;
+
+                spriteRenderer.material.SetColor("_Color", tempColor);
+
+            }
+
+        }
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.CompareTag(TagManager.ENEMY_BULLET_TAG))
+        {
+            TakeDamage(20f);
+        }
+
+        if (collision.CompareTag(TagManager.HEALTH_FUEL_TAG))
+        {
+            //playerHealth.IncreaseHealth(collision.GetComponent<HealthFuel>().GetHealthValue());
+            Destroy(collision.gameObject);
+        }
+
+    }
 
 }

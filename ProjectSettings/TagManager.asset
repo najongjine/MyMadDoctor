@@ -9,6 +9,7 @@ TagManager:
   - EnemyBullet
   - Enemy
   - HealthFuel
+  - EnemyBulletPool
   layers:
   - Default
   - TransparentFX
