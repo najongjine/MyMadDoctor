@@ -13,6 +13,9 @@ public class EnemyBulletPool : MonoBehaviour
     [SerializeField]
     EnemyBullet enemyBullet_1_pref, enemyBullet_2_pref;
 
+    [SerializeField]
+    private bool playSound_1;
+
     private void Awake()
     {
         if(instance != null)
@@ -27,7 +30,14 @@ public class EnemyBulletPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (playSound_1)
+        {
+            SoundManager.instance.Enemy_Weapon_1_Shoot();
+        }
+        else
+        {
+            SoundManager.instance.Enemy_Weapon_2_Shoot();
+        }
     }
 
     // Update is called once per frame

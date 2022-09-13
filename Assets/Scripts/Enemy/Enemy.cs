@@ -259,7 +259,7 @@ public class Enemy : MonoBehaviour
 
             Invoke("RemoveEnemyFromGame", 2f);
 
-            //GameplayUIController.instance.SetKillScoreText();
+            GameplayUIController.instance.SetKillScoreText();
 
         }
     }
@@ -267,9 +267,7 @@ public class Enemy : MonoBehaviour
     void RemoveEnemyFromGame()
     {
         // inform the spawner to remove the enemy
-        /*
         EnemySpawner.instance.RemoveSpawnedEnemy(gameObject);
-        */
         Destroy(gameObject);
         
     }

@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 3121013781446034151}
   - component: {fileID: 579245990053725815}
   - component: {fileID: 12455162}
+  - component: {fileID: 572473341}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Enemy
@@ -228,3 +229,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyHealth: 5
   playerMaxHealth: 100
+--- !u!114 &572473341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193664158891246534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec647aa440c3bde48b1b725fbf5c49eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthFuels:
+  - {fileID: 3246345783296418237, guid: 715d3a95b2af24848a6022a2209f41d0, type: 3}
+  - {fileID: 6319608623092659493, guid: bf5f6cdd06ab03141bada880015d994b, type: 3}
+  - {fileID: 3036080704688397224, guid: 3d9c959fdf1b7364fbfc911a5ba74c94, type: 3}
+  - {fileID: 586342217078254241, guid: 929815257cfe44247bf7dab53ebe678b, type: 3}
+  chanceToSpawn: 3

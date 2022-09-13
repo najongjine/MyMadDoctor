@@ -24,7 +24,7 @@ public class PlayerWeaponsManager : MonoBehaviour
         playerAnimation.ChangeAnimatorController(weaponIndex);
 
         playerShootingManager = GetComponent<PlayerShootingManager>();
-        //playerShootingManager.SetWeaponType(weaponIndex);
+        playerShootingManager.SetWeaponType(weaponIndex);
 
     }
 
@@ -46,9 +46,7 @@ public class PlayerWeaponsManager : MonoBehaviour
             playerAnimation.ChangeAnimatorController(weaponIndex);
 
             playerShootingManager.SetWeaponType(weaponIndex);
-            /*
             GameplayUIController.instance.ChangeWeaponIcon();
-            */
 
         }
     }

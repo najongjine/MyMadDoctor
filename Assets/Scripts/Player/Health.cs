@@ -19,7 +19,7 @@ public class Health : MonoBehaviour
         if (gameObject.CompareTag(TagManager.PLAYER_TAG))
         {
             // initialize health slider
-            //GameplayUIController.instance.InitializeHealthSlider(0, playerHealth, playerHealth);
+            GameplayUIController.instance.InitializeHealthSlider(0, playerHealth, playerHealth);
         }
 
     }
@@ -39,7 +39,7 @@ public class Health : MonoBehaviour
         playerHealth -= amount;
 
         // preview health UI
-        //GameplayUIController.instance.SetHealthSliderValue(playerHealth);
+        GameplayUIController.instance.SetHealthSliderValue(playerHealth);
 
     }
 
@@ -56,7 +56,7 @@ public class Health : MonoBehaviour
             playerHealth = playerMaxHealth;
 
         // inform health UI about health change
-        //GameplayUIController.instance.SetHealthSliderValue(playerHealth);
+        GameplayUIController.instance.SetHealthSliderValue(playerHealth);
     }
 
 }

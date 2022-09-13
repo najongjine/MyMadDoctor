@@ -90,17 +90,17 @@ public class PlayerShootingManager : MonoBehaviour
         }
         if (weaponType == 0)
         {
-            //SoundManager.instance.Weapon_1_Shoot();
+            SoundManager.instance.Weapon_1_Shoot();
         }
 
         if (weaponType == 2)
         {
-            //SoundManager.instance.Weapon_3_Shoot();
+            SoundManager.instance.Weapon_3_Shoot();
         }
 
         if (weaponType == 3)
         {
-            //SoundManager.instance.Weapon_4_Shoot();
+            SoundManager.instance.Weapon_4_Shoot();
         }
 
     }
@@ -109,7 +109,7 @@ public class PlayerShootingManager : MonoBehaviour
     {
         electricityBullet.SetActive(activateWeapon);
         // sound fx
-        //SoundManager.instance.Weapon_2_Shoot(activateWeapon);
+        SoundManager.instance.Weapon_2_Shoot(activateWeapon);
     }
 
 } // class

@@ -220,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
     void RemovePlayerFromGame()
     {
         // call game over panel
-        //GameOverUIController.instance.GameOver();
+        GameOverUIController.instance.GameOver();
         Destroy(gameObject);
     }
 
@@ -245,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
             playerHurtFX.Play(TagManager.FX_ANIMATION_NAME);
 
             // play the hurt sound fx
-            //SoundManager.instance.PlayerHurt();
+            SoundManager.instance.PlayerHurt();
         }
     }
 
@@ -286,7 +286,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.CompareTag(TagManager.HEALTH_FUEL_TAG))
         {
-            //playerHealth.IncreaseHealth(collision.GetComponent<HealthFuel>().GetHealthValue());
+            playerHealth.IncreaseHealth(collision.GetComponent<HealthFuel>().GetHealthValue());
             Destroy(collision.gameObject);
         }
 
